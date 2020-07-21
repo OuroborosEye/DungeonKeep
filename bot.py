@@ -4,6 +4,9 @@ import random
 client = discord.Client()
 servers = {}
 
+basic_help_message = '```Dungeon Keep Help:\n\n\t- Purge all bot-related messages: !purge\n\t- Roll dices: !roll\n\n- For details on more complex commands, type !help command (eg. !help roll)```'
+roll_help_message = '```Dungeon Keep Roll Command Help:\n\n\tAliases: !roll 1d20 #alias_name creates an alias. Afterwards, !roll #alias_name will roll 1d20\n\tTHIS FEATURE IS IN DEVELOPMENT! OH NOES! COME BACK LATER :D```'
+
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
@@ -17,6 +20,8 @@ async def on_message(message):
         await process_roll(message)
     elif message.content.startswith('!purge'):
         await purge_messages(message)
+    elif message.content.startswith('!help'):
+        await show_help(message)        
 
 def is_bot_message(message):
     if message.author == client.user:
@@ -25,7 +30,15 @@ def is_bot_message(message):
         return True
     if message.content.startswith('!purge'):
         return True
+    if message.content.startswith('!help'):
+        return True
     return False
+
+async def show_help(message):
+    if 'roll' in message.content:
+        await message.channel.send(roll_help_message)
+    else:
+        await message.channel.send(basic_help_message)
 
 async def purge_messages(message):
     to_delete = []
@@ -51,4 +64,4 @@ async def process_roll(message):
             servers[message.guild.id][alias] = command
             await message.channel.send('Saved alias %s: %s' % (command,alias))
 
-client.run('')
+client.run('NzM1MTY3NTAwMDg5ODE5MjE3.XxcXRQ.A0WJiyUr-F02NOoTNgCiuFuq0jE')
