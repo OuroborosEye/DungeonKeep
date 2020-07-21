@@ -64,4 +64,4 @@ async def process_roll(message):
             servers[message.guild.id][alias] = command
             await message.channel.send('Saved alias %s: %s' % (command,alias))
 
-client.run('NzM1MTY3NTAwMDg5ODE5MjE3.XxcXRQ.A0WJiyUr-F02NOoTNgCiuFuq0jE')
+client.run('')
