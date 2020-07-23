@@ -1,6 +1,6 @@
 import discord
 import random
-from rollhelpernew import Roll
+from rollClasses import Roll
 
 client = discord.Client()
 servers = {}
