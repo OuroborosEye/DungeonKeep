@@ -1,4 +1,5 @@
 import discord
+import os
 import random
 from rollClasses import Roll
 
@@ -116,4 +117,4 @@ async def process_init(message):
         await message.channel.send('Initiatives reset')
 
 
-client.run('')
+client.run(os.environ['botToken'])
