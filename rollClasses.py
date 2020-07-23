@@ -5,9 +5,9 @@ class Roll():
         i = 1
         if ' ' in command:
             idx = command.index(' ')
-        if 'd' not in command[:idx]:
-            i = int(command[:idx])
-            command = command[idx+1:].replace(' ', '')
+            if 'd' not in command[:idx]:
+                i = int(command[:idx])
+                command = command[idx+1:].replace(' ', '')
 
         self.repetition = i
         self.dice = [Die(die) for die in command.split('+')]
