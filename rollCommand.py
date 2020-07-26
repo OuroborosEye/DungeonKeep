@@ -2,6 +2,33 @@ import random
 import re
 
 repetion_match = r'([0-9])(?![\s]*[\+]+)'
+class rollCommand():
+    def __init__(self):
+        self.guild_aliases = {}
+
+    def runCommand(self,message):
+        command = message.content.lower().replace('!roll ', '').strip()
+        
+        guild_id = message.guild.id
+    
+        if guild_id not in self.guild_aliases:
+            self.guild_aliases[guild_id] = {} 
+        
+        output = ''
+        if '#' in command:
+            if command.startswith('#'):
+                command = self.guild_aliases[guild_id][command[1:]]
+                output += 'Throwing alias %s (%s)\n' % ([command[1:]],command)
+            else:
+                alias = command[command.indexOf('#'):]
+                self.guild_aliases[guild_id][alias]
+                output += 'Saved Alias %s\n' % alias
+        
+        roll = Roll(command)
+        output += roll.printResult()
+        return output
+
+
 class Roll():
     def __init__(self, command):
         self.repetition = 1

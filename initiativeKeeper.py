@@ -6,17 +6,16 @@ class initiativeKeeper():
     def runCommand(self,message):
         command = message.content.lower().replace('!init ', '')
         
-        guild_id = message.guild.id 
-        cmd = command.split(' ')[0]
+        guild_id = message.guild.id
     
         if guild_id not in self.guild_initiatives:
             self.guild_initiatives[guild_id] = {} 
 
-        if cmd == 'clear':
+        if command.startswith('clear'):
             return  self.clearInitiatives(guild_id)
-        elif cmd == 'show':
+        elif command.startswith('show'):
             return self.printInitiatives(guild_id,message.guild.name)
-        elif cmd == 'add':
+        elif command.startswith('add'):
             return self.addInitiative(guild_id, command.replace('add ',''))
         else:
             return 'Invalid command'
