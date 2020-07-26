@@ -1,7 +1,7 @@
 import random
 import re
 
-repetion_match = r'([0-9])(?![\s]*[\+]+)'
+repetion_match = r'([0-9])(?=[\s]+)(?![\+]+)'
 class rollCommand():
     def __init__(self):
         self.guild_aliases = {}
@@ -36,7 +36,6 @@ class Roll():
         
         match = re.match(repetion_match,command)
         if match:
-            print(match.group())
             self.repetition = int(match.group())
             command = command.replace(match.group(),'',1)        
         
