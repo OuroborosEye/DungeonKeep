@@ -17,11 +17,12 @@ class rollCommand():
         output = ''
         if '#' in command:
             if command.startswith('#'):
+                output += 'Throwing alias %s (%s)\n' % (command[1:],self.guild_aliases[guild_id][command[1:]])
                 command = self.guild_aliases[guild_id][command[1:]]
-                output += 'Throwing alias %s (%s)\n' % ([command[1:]],command)
             else:
-                alias = command[command.indexOf('#'):]
-                self.guild_aliases[guild_id][alias]
+                alias = command[command.index('#')+1:]
+                command = command[:command.index('#')]
+                self.guild_aliases[guild_id][alias] = command 
                 output += 'Saved Alias %s\n' % alias
         
         output += '%s threw %s\n' % (message.author.display_name, command)
