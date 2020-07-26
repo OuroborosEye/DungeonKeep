@@ -11,37 +11,46 @@ class Roll():
         if match:
             print(match.group())
             self.repetition = int(match.group())
-            command = command.replace(match.group(),'',1)
+            command = command.replace(match.group(),'',1)        
+        
         command = command.replace(' ','')
 
+        self.throw = command
         self.dice = [Die(die) for die in re.split(r'[-\+]',command)]
 
-
     def getResult(self):
-        results = []
-        for _ in range(self.repetition):
-            currResult = []
-            for die in self.dice:
-                currResult.append(die.rollDie())
-            results.append(currResult)
-        return results
+        return [ [ die.rollDie() for die in self.dice ] for _ in range(self.repetition)]
 
+    def printResult(self):
+        output = 'X threw %i %s\n' % (self.repetition,self.throw)
+        for throw in self.getResult():
+            flat_list = []
+            format_throw = self.throw
+            for dieResult in throw:
+                flat_list.extend(dieResult.output)
+                format_throw = format_throw.replace(dieResult.throw,str(sum(dieResult.output)),1)
+            output += '%s %s: %i\n' % (flat_list,format_throw,eval(format_throw))
+        return output
+
+class RollResult():
+    def __init__(self):
+        self.throw = ''
+        self.output = []
 
 class Die():
     def __init__(self,die):
         self.die = die
-        if 'd' in self.die: 
+        if self.die.isnumeric():
+            self.isFixed = True
+        else:
             idx = self.die.index('d')
             self.num_times = int(self.die[:idx])
-            self.die_type = int(self.die[idx+1:])
+            self.faces = int(self.die[idx+1:])
             self.isFixed = False
-        else:
-            self.num_times = 1
-            self.die_type = 1
-            self.isFixed = True
 
     def rollDie(self):
-        if self.isFixed:
-            return [int(self.die)]
-        return [random.randint(1,self.die_type) for _ in range(self.num_times)]
+        result = RollResult()
+        result.throw = self.die
+        result.output = [int(self.die)] if self.isFixed else [random.randint(1,self.faces) for _ in range(self.num_times)]
+        return result
     
