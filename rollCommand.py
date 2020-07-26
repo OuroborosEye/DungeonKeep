@@ -24,6 +24,7 @@ class rollCommand():
                 self.guild_aliases[guild_id][alias]
                 output += 'Saved Alias %s\n' % alias
         
+        output += '%s threw %s\n' % (message.author.display_name, command)
         roll = Roll(command)
         output += roll.printResult()
         return output
@@ -48,14 +49,15 @@ class Roll():
         return [ [ die.rollDie() for die in self.dice ] for _ in range(self.repetition)]
 
     def printResult(self):
-        output = 'X threw %i %s\n' % (self.repetition,self.throw)
+        output = ''
         for throw in self.getResult():
             flat_list = []
             format_throw = self.throw
             for dieResult in throw:
                 flat_list.extend(dieResult.output)
                 format_throw = format_throw.replace(dieResult.throw,str(sum(dieResult.output)),1)
-            output += '%s %s: %i\n' % (flat_list,format_throw,eval(format_throw))
+            output += '%s: %i\n' % (format_throw,eval(format_throw))
+            # output += '%s %s: %i\n' % (flat_list,format_throw,eval(format_throw))
         return output
 
 class RollResult():

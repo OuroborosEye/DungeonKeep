@@ -24,13 +24,13 @@ async def on_message(message):
         return
     message.content = message.content.lower()
     if message.content.startswith('!roll '):
-        await message.channel.send(roll_cmd.runCommand(message.content))
+        await message.channel.send(roll_cmd.runCommand(message))
     elif message.content.startswith('!purge'):
         await purge_messages(message)
     elif message.content.startswith('!help'):
         await show_help(message)
     elif message.content.startswith('!init '):
-        await message.channel.send(init_keep.runCommand(message.content))
+        await message.channel.send(init_keep.runCommand(message))
 
 def is_bot_message(message):
     if message.author == client.user:
