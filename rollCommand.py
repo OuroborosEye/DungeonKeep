@@ -1,16 +1,20 @@
 import random
+import re
 
+repetion_match = r'([0-9])(?![\s]*[\+]+)'
 class Roll():
     def __init__(self, command):
-        i = 1
-        if ' ' in command:
-            idx = command.index(' ')
-            if 'd' not in command[:idx]:
-                i = int(command[:idx])
-                command = command[idx+1:].replace(' ', '')
+        self.repetition = 1
+        command = command.lower()
+        
+        match = re.match(repetion_match,command)
+        if match:
+            print(match.group())
+            self.repetition = int(match.group())
+            command = command.replace(match.group(),'',1)
+        command = command.replace(' ','')
 
-        self.repetition = i
-        self.dice = [Die(die) for die in command.split('+')]
+        self.dice = [Die(die) for die in re.split(r'[-\+]',command)]
 
 
     def getResult(self):
