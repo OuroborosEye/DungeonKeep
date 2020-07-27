@@ -1,8 +1,7 @@
 
 class initiativeKeeper():
     def __init__(self):
-        self.guild_initiatives = {}
-        self.init_index = 0
+        self.guild_initiatives = {}   
 
     def runCommand(self,message):
         command = message.content.lower().replace('!init ', '')
@@ -10,8 +9,7 @@ class initiativeKeeper():
         guild_id = message.guild.id
     
         if guild_id not in self.guild_initiatives:
-            self.guild_initiatives[guild_id] = {} 
-
+            self.guild_initiatives[guild_id] = {'Initiatives':{}, 'Init_Index':-1} 
         if command.startswith('clear'):
             return  self.clearInitiatives(guild_id)
         elif command.startswith('show'):
@@ -26,29 +24,33 @@ class initiativeKeeper():
     def addInitiative(self,guild_id,command):
         try:
             char,init = command.split(' ')
-            self.guild_initiatives[guild_id][char] = init
-            self.init_index = 0
+            self.guild_initiatives[guild_id]['Initiatives'][char] = init
+            self.guild_initiatives[guild_id]['Init_Index'] = 0
             return 'Initiative Added'
         except:
             return 'Invalid initiatives to add'
 
     def clearInitiatives(self,guild_id):
-        self.guild_initiatives[guild_id] = {}
+        self.guild_initiatives[guild_id] = {'Initiatives':{}, 'Init_Index':-1}
         return 'Initiatives cleared'
 
     def printInitiatives(self,guild_id,guild_name):
-        if len(self.guild_initiatives[guild_id]) == 0:
+        if len(self.guild_initiatives[guild_id]['Initiatives']) == 0:
             return 'No initiatives saved'
 
         output = '```Initiatives for %s\n' % guild_name
-        for row in sorted(self.guild_initiatives[guild_id].items(),key=lambda k:k[1],reverse=True):
+        for row in sorted(self.guild_initiatives[guild_id]['Initiatives'].items(), reverse=True, key=lambda k:int(k[1])):
             output += '%s: %s\n' % (row[0],row[1])
         output += '```'
         return output
     
     def nextInitiative(self,guild_id):
-        output = 'Next turn is for: %s' % (sorted(self.guild_initiatives[guild_id].items(), reverse=True, key=lambda x: int(x[1]))[self.init_index][0])
-        self.init_index += 1
-        if self.init_index == len(self.guild_initiatives[guild_id]):
-            self.init_index = 0
+        idx = self.guild_initiatives[guild_id]['Init_Index']
+        if len(self.guild_initiatives[guild_id]['Initiatives']) == 0:
+            return 'No initiatives saved'
+        output = '```Next turn is for: %s```' % (sorted(self.guild_initiatives[guild_id]['Initiatives'].items(), reverse=True, key=lambda k: int(k[1]))[idx][0])
+        idx += 1
+        if idx == len(self.guild_initiatives[guild_id]['Initiatives']):
+            idx = 0
+        self.guild_initiatives[guild_id]['Init_Index'] = idx
         return output
