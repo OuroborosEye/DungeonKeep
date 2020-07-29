@@ -2,6 +2,8 @@ import random
 import re
 
 repetion_match = r'[\s]*[0-9]+[\s]+(?![\+\-])'
+setting_match = r'!\D+' 
+
 class rollCommand():
     def __init__(self):
         self.guild_aliases = {}
@@ -30,18 +32,24 @@ class rollCommand():
         output += roll.printResult()
         return output
 
-
 class Roll():
     def __init__(self, command):
         self.repetition = 1
+        self.setting = ''
         command = command.lower()
         
         match = re.match(repetion_match,command)
         if match:
             self.repetition = int(match.group())
             command = command.replace(match.group(),'',1)
-        command = command.replace(' ','')
+        
+        match = re.findall(setting_match,command)
+        if len(match) > 0:
+            self.setting = str(match[0]).replace(' ','')[1]
+            command = command.replace(str(match[0]),'',1)
 
+        command = command.replace(' ','')
+        
         self.throw = command
         self.dice = [Die(die) for die in re.split(r'[-\+]',command) if 'd' in die]
 
@@ -56,7 +64,12 @@ class Roll():
             for dieResult in throw:
                 flat_list.append(dieResult.output)
                 format_throw = format_throw.replace(dieResult.throw,str(sum(dieResult.output)),1)
-            output += '`%s` %s  **Result: %i**\n' % (str(flat_list)[1:-1].replace(', [','['),format_throw,eval(format_throw))
+            if self.setting == 'v':
+                output += '`%s` %s  **Result: %i**\n' % (str(flat_list)[1:-1].replace(', [','['),format_throw,eval(format_throw))
+            elif self.setting =='q':
+                output += '**Result: %i**\n' % (eval(format_throw))
+            else:
+                output += '%s  **Result: %i**\n' % (format_throw,eval(format_throw)) 
         return output
 
 class RollResult():
