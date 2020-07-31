@@ -1,8 +1,9 @@
 import random
 import re
+from enum import Enum
 
 repetion_match = r'[\s]*[0-9]+[\s]+(?![\+\-])'
-setting_match = r'!\D+' 
+setting_match = r'![\w\s]+' 
 
 class rollCommand():
     def __init__(self):
@@ -35,7 +36,7 @@ class rollCommand():
 class Roll():
     def __init__(self, command):
         self.repetition = 1
-        self.setting = ''
+        self.verbosity = Verbosity.Normal
         command = command.lower()
         
         match = re.match(repetion_match,command)
@@ -43,10 +44,12 @@ class Roll():
             self.repetition = int(match.group())
             command = command.replace(match.group(),'',1)
         
-        match = re.findall(setting_match,command)
-        if len(match) > 0:
-            self.setting = str(match[0]).replace(' ','')[1]
-            command = command.replace(str(match[0]),'',1)
+        for m in re.findall(setting_match,command):
+            command = command.replace(m,'',1)
+            if m in ['verbose','v']:
+                self.verbosity = Verbosity.Verbose
+            elif m in ['quiet','q']:
+                self.verbosity = Verbosity.Quiet
 
         command = command.replace(' ','')
         
@@ -64,13 +67,20 @@ class Roll():
             for dieResult in throw:
                 flat_list.append(dieResult.output)
                 format_throw = format_throw.replace(dieResult.throw,str(sum(dieResult.output)),1)
-            if self.setting == 'v':
+            
+            if self.verbosity == Verbosity.Verbose:
                 output += '`%s` %s  **Result: %i**\n' % (str(flat_list)[1:-1].replace(', [','['),format_throw,eval(format_throw))
-            elif self.setting =='q':
+            elif self.verbosity == Verbosity.Quiet:
                 output += '**Result: %i**\n' % (eval(format_throw))
             else:
-                output += '%s  **Result: %i**\n' % (format_throw,eval(format_throw)) 
+                output += '%s  **Result: %i**\n' % (format_throw,eval(format_throw))
         return output
+
+class Verbosity(Enum):
+    Verbose = 1
+    Normal  = 2
+    Quiet   = 3
+
 
 class RollResult():
     def __init__(self):
