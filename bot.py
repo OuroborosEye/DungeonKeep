@@ -14,9 +14,11 @@ basic_help_message = '```Dungeon Keep Help:\n\n\t- Purge all bot-related message
 roll_help_message = '```Dungeon Keep Roll Command Help:\n\n\tRepetition:!roll 2 2d6 + 3d10 repeats two times a roll of two six-sided dice and three ten-sided dice. If there is no number the default is one repetition Aliases: !roll 1d20 #alias_name creates an alias. Afterwards, !roll #alias_name will roll 1d20\n\tTHIS FEATURE IS IN DEVELOPMENT! OH NOES! COME BACK LATER :D```'
 init_help_message = '```Dungeon Keep Initiative Command Help:\n\n\tshow: Shows all commands currently saved\n\tadd char init: Adds char to the initiative list with initiative init\n\tnext: Shows next char in the list\n\tclear: Empties the initiatives list```'
 
+
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+
 
 @client.event
 async def on_message(message):
@@ -45,6 +47,7 @@ def is_bot_message(message):
         return True
     return False
 
+
 async def show_help(message):
     if 'roll' in message.content:
         await message.channel.send(roll_help_message)
@@ -52,6 +55,7 @@ async def show_help(message):
         await message.channel.send(init_help_message)
     else:
         await message.channel.send(basic_help_message)
+
 
 async def purge_messages(message):
     to_delete = []
