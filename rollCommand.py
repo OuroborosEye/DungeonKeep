@@ -46,9 +46,9 @@ class Roll():
         
         for m in re.findall(setting_match,command):
             command = command.replace(m,'',1)
-            if m in ['verbose','v']:
+            if m in ['!verbose','!v']:
                 self.verbosity = Verbosity.Verbose
-            elif m in ['quiet','q']:
+            elif m in ['!quiet','!q']:
                 self.verbosity = Verbosity.Quiet
 
         command = command.replace(' ','')
