@@ -3,6 +3,7 @@ import os
 import random
 from rollCommand import rollCommand
 from initiativeKeeper import initiativeKeeper
+from datetime import datetime
 
 client = discord.Client()
 servers = {}
@@ -37,13 +38,13 @@ async def on_message(message):
 def is_bot_message(message):
     if message.author == client.user:
         return True
-    if message.content.startswith('!roll '):
+    if message.content.lower().startswith('!roll '):
         return True
-    if message.content.startswith('!purge'):
+    if message.content.lower().startswith('!purge'):
         return True
-    if message.content.startswith('!help'):
+    if message.content.lower().startswith('!help'):
         return True
-    if message.content.startswith('!init'):
+    if message.content.lower().startswith('!init'):
         return True
     return False
 
@@ -60,7 +61,7 @@ async def show_help(message):
 async def purge_messages(message):
     to_delete = []
     async for message in message.channel.history(limit=200):
-        if is_bot_message(message):
+        if is_bot_message(message) and (datetime.now() - message.created_at).days < 14:
             to_delete.append(message)
     await message.channel.delete_messages(to_delete)
 
