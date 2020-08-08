@@ -7,25 +7,15 @@ class initiativeKeeper():
         command = message.content.lower().replace('!init ', '')
 
         guild_id = message.guild.id
-<<<<<<< HEAD
 
         if guild_id not in self.guild_initiatives:
             self.guild_initiatives[guild_id] = {'Initiatives': {}, 'Init_Index': -1}
-=======
-    
-        if guild_id not in self.guild_initiatives:
-            self.guild_initiatives[guild_id] = {'Initiatives':{}, 'Init_Index':-1} 
->>>>>>> master
         if command.startswith('clear'):
             return self.clearInitiatives(guild_id)
         elif command.startswith('show'):
             return self.printInitiatives(guild_id, message.guild.name)
         elif command.startswith('add'):
-<<<<<<< HEAD
             return self.addInitiative(guild_id, command.replace('add ', ''))
-=======
-            return self.addInitiative(guild_id, command.replace('add ',''))
->>>>>>> master
         elif command.startswith('next'):
             return self.nextInitiative(guild_id)
         else:
@@ -33,11 +23,7 @@ class initiativeKeeper():
 
     def addInitiative(self, guild_id, command):
         try:
-<<<<<<< HEAD
             char, init = command.split(' ')
-=======
-            char,init = command.split(' ')
->>>>>>> master
             self.guild_initiatives[guild_id]['Initiatives'][char] = init
             self.guild_initiatives[guild_id]['Init_Index'] = 0
             return 'Initiative Added'
