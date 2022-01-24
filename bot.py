@@ -11,14 +11,14 @@ servers = {}
 init_keep = initiativeKeeper()
 roll_cmd = rollCommand()
 
-basic_help_message = '```Dungeon Keep Help:\n\n\t- Purge all bot-related messages: !purge\n\t- Roll dices: !roll\n\t- Initiative Keeping: !init\n\nFor details on more complex commands, type !help command (eg. !help roll)```'
-roll_help_message = '```Dungeon Keep Roll Command Help:\n\n\tRepetition:!roll 2 2d6 + 3d10 repeats two times a roll of two six-sided dice and three ten-sided dice. If there is no number the default is one repetition Aliases: !roll 1d20 #alias_name creates an alias. Afterwards, !roll #alias_name will roll 1d20\n\tTHIS FEATURE IS IN DEVELOPMENT! OH NOES! COME BACK LATER :D```'
-init_help_message = '```Dungeon Keep Initiative Command Help:\n\n\tshow: Shows all commands currently saved\n\tadd char init: Adds char to the initiative list with initiative init\n\tnext: Shows next char in the list\n\tclear: Empties the initiatives list```'
+basic_help_message = '```Em Que Posso Ajudar Milord(ady) ?:\n\n\t- Apagar Todas as Minhas Mensagens: !purge\n\t- Rolar Dados: !roll\n\t- Lista de Iniciativa: !init\n\nPara Mais Detalhes ou Comandos Mais Complexos, Digite !help command (ex. !help roll)```'
+roll_help_message = '``Aqui Está Mais Detalhes da Lista de Comando de Rolagem,Milord(ady): \n\n\tRepetition:Ex:!roll 2 2d6 + 3d10: Repete 2x a Rolagem do Dado 2d6 + 3d10. Se Não Tiver Um Número Antes, o Padrão é 1. \n\tAliase: !roll 1d20 #aliase_name, Cria Um Apelido, Depois, !roll #alias_name Irá Rolar 1d20 \n\tESSA FUNÇÃO ESTÁ EM DESENVOLVIMENTO! VOLTE DEPOIS :D```'
+init_help_message = '```Aqui Está Mais Detalhes da Lista de Comando de Iniciativa, Milord(ady): \n\tshow: Mostra Todos As Iniciativas Salvas na Lista\n\tadd char init: Adiciona Personagem na Lista de Iniciativa\n\tnext: Mostra o Próximo Personagem Da Lista\n\tclear: Limpa a Lista de Iniciativa```'
 
 
 @client.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
+    print('Estamos Logados Em {0.user}'.format(client))
 
 
 @client.event
@@ -65,4 +65,4 @@ async def purge_messages(message):
             to_delete.append(message)
     await message.channel.delete_messages(to_delete)
 
-client.run(os.environ['botToken'])
+client.run('Token Aqui')
